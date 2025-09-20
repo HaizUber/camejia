@@ -143,13 +143,14 @@ export default function About() {
     email: "gabzmejia117@gmail.com",
     phone: "+63 (960) 391-5837",
     location: "Philippines",
-    website: "yourdomain.dev",
+    website: "https://camejia.vercel.app",
   };
 
   const aboutCopy = `
-I'm a web developer focused on building fast, functional, and clean interfaces using React + Tailwind on the front end and PHP/CodeIgniter on the back end. I enjoy taking complex business rules (HRIS leave accruals, scheduling logic, data integrations) and turning them into tools that non-technical users actually like using.
-
-My goal is to deliver work that’s both robust under the hood and smooth for end-users: clear data flows, responsive layouts, dark/light theming, and maintainable code. I’ve shipped internal portals, leave management systems, and reporting dashboards that helped teams work faster with fewer mistakes.
+Entry-level IT professional specializing in web and mobile application development. Skilled
+in building responsive web apps, mobile-first solutions, and database-driven systems. Eager
+to apply academic knowledge and hands-on project experience to contribute to innovative
+technology solutions.
   `.trim();
 
   const services = [
@@ -161,12 +162,12 @@ My goal is to deliver work that’s both robust under the hood and smooth for en
     {
       icon: <Code2 className="w-6 h-6 text-blue-500" />,
       title: "Web Development",
-      desc: "Full-stack builds in React, Tailwind, PHP/CodeIgniter, MySQL.",
+      desc: "Building robust full-stack applications using React, MongoDB, PHP/CodeIgniter, and MySQL for scalable solutions.",
     },
     {
       icon: <Database className="w-6 h-6 text-blue-500" />,
-      title: "HRIS / Admin Tools",
-      desc: "Custom leave modules, reporting, and data workflows.",
+      title: "Data Driven Systems",
+      desc: "Developing dynamic platforms that adapt content and behavior based on real-time data and custom business logic.",
     },
     {
       icon: <Smartphone className="w-6 h-6 text-blue-500" />,

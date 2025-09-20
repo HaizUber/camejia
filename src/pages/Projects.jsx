@@ -4,25 +4,98 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const assocImageFiles = [
+  "projAssoc1.png",
+  "projAssoc2.png",
+  "projAssoc3.png",
+  "projAssoc4.png",
+];
+
+const renderImageFiles = [
+   "projRender1.png",
+   "projRender2.png",
+   "projRender3.png",
+   "projRender4.png",
+   "projRender5.png",
+   "projRender6.png",
+];
+
+const alabitesImageFiles = [
+   "alabites1.png",
+   "alabites2.png",
+   "alabites3.png",
+   "alabites4.png",
+   "alabites5.png",
+   "alabites6.png",
+   "alabites7.png",
+   "alabites8.png",
+   "alabites9.png",
+   "alabites10.png",
+];
+
+const rotomdexImageFiles = [
+   "rotomdex1.png",
+   "rotomdex2.png",
+];
+
+const portfolioImageFiles = [
+    "projportfolio1.png",
+    "projportfolio2.png",
+    "projportfolio3.png",
+    "projportfolio4.png",
+];
+
+const asssocImages = assocImageFiles.map(
+  (file) => new URL (`../assets/${file}`, import.meta.url).href
+);
+
+const renderImages = renderImageFiles.map(
+  (file) => new URL (`../assets/${file}`, import.meta.url).href
+);
+
+const alabitesImages = alabitesImageFiles.map(
+  (file) => new URL (`../assets/${file}`, import.meta.url).href
+);
+
+const rotomdexImages = rotomdexImageFiles.map(
+   (file) => new URL (`../assets/${file}`, import.meta.url).href
+ );
+
+const portfolioImages = portfolioImageFiles.map(
+   (file) => new URL (`../assets/${file}`, import.meta.url).href
+);
+
 const projects = [
   {
     title: "Associates Portal",
     category: "Web Development",
     desc: "Leave management system.",
-    // image: projAssoc,
+    images: asssocImages,
   },
   {
     title: "Render Farm Manager",
     category: "Web Development",
     desc: "PC resource management & reservations.",
-    // image: projRender,
+    images: renderImages,
+  },
+  {
+    title: "Alabites Food Ordering App",
+    category: "Web Development",
+    desc: "Food ordering application (React, ExpressJS, MongoDB, Firebase)",
+    images: alabitesImages,
   },
   {
     title: "Portfolio Website",
     category: "Web Design",
     desc: "Personal dev portfolio in React + Vite + Tailwind.",
-    // image: projPortfolio,
+    images: portfolioImages,
   },
+  {
+    title: "RotomDex {WIP}",
+    category: "Web Development",
+    desc: "Pokemon-Themed Wiki Application (React + Vite, PokeAPI) *Very early in development*",
+    images: rotomdexImages,
+  }
 ];
 
 function ScrollFloatHeading({ children }) {
@@ -156,9 +229,9 @@ function ProjectCard({ project, onClick }) {
       className="project-card cursor-pointer group rounded-2xl overflow-hidden bg-white dark:bg-gray-900 ring-1 ring-black/10 dark:ring-white/10 shadow transition-all hover:shadow-xl hover:-translate-y-0.5"
     >
       <div className="aspect-video w-full overflow-hidden bg-gray-200 dark:bg-gray-800">
-        {project.image ? (
+        {project.images && project.images.length > 0 ? (
           <img
-            src={project.image}
+            src={project.images[0]}
             alt={project.title}
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             loading="lazy"
@@ -184,32 +257,46 @@ function ProjectCard({ project, onClick }) {
 
 function ProjectModal({ project, onClose }) {
   const modalRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [enlarged, setEnlarged] = useState(false);
 
   useEffect(() => {
     const onKeyDown = (e) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        if (enlarged) {
+          setEnlarged(false);
+        } else {
+          onClose();
+        }
+      }
+      if (!enlarged) {
+        if (e.key === "ArrowRight") nextSlide();
+        if (e.key === "ArrowLeft") prevSlide();
+      }
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [onClose]);
+  }, [onClose, enlarged]);
 
   useLayoutEffect(() => {
     const el = modalRef.current;
     if (!el) return;
-
     const anim = gsap.fromTo(
       el,
       { opacity: 0, scale: 0.8 },
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 0.4,
-        ease: "power2.out",
-      }
+      { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" }
     );
-
     return () => anim.kill();
   }, []);
+
+  const nextSlide = () =>
+    setCurrentIndex((prev) =>
+      prev + 1 < project.images.length ? prev + 1 : 0
+    );
+  const prevSlide = () =>
+    setCurrentIndex((prev) =>
+      prev - 1 >= 0 ? prev - 1 : project.images.length - 1
+    );
 
   return (
     <div
@@ -223,18 +310,58 @@ function ProjectModal({ project, onClose }) {
       >
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white text-xl"
-          aria-label="Close modal"
+          className="absolute top-3 right-3 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white text-2xl"
         >
           &times;
         </button>
-        {project.image && (
-          <img
-            src={project.image}
-            alt={project.title}
-            className="w-full h-48 object-cover"
-          />
+
+        {project.images && project.images.length > 0 && (
+          <div className="relative w-full h-64 overflow-hidden">
+            <div
+              className="flex transition-transform duration-500 ease-in-out h-full"
+              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+            >
+              {project.images.map((img, idx) => (
+                <img
+                  key={idx}
+                  src={img}
+                  alt={`${project.title} screenshot ${idx + 1}`}
+                  className="w-full flex-shrink-0 object-cover h-full cursor-zoom-in"
+                  onClick={() => setEnlarged(true)}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={prevSlide}
+              className="absolute top-1/2 left-3 -translate-y-1/2 bg-black/50 text-white rounded-full p-2 hover:bg-black/70"
+            >
+              &#8249;
+            </button>
+            <button
+              onClick={nextSlide}
+              className="absolute top-1/2 right-3 -translate-y-1/2 bg-black/50 text-white rounded-full p-2 hover:bg-black/70"
+            >
+              &#8250;
+            </button>
+
+            <div className="absolute bottom-3 w-full flex justify-center gap-2">
+              {project.images.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentIndex(idx)}
+                  className={`w-3 h-3 rounded-full ${
+                    currentIndex === idx
+                      ? "bg-white"
+                      : "bg-white/50 hover:bg-white/80"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
         )}
+
+        {/* Content */}
         <div className="p-6">
           <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             {project.title}
@@ -245,6 +372,21 @@ function ProjectModal({ project, onClose }) {
           <p className="mt-3 text-gray-700 dark:text-gray-300">{project.desc}</p>
         </div>
       </div>
+
+      {enlarged && (
+        <div
+          className="fixed inset-0 z-60 flex items-center justify-center bg-black/90"
+          onClick={() => setEnlarged(false)}
+        >
+          <img
+            src={project.images[currentIndex]}
+            alt="Enlarged"
+            className="max-w-full max-h-full object-contain cursor-zoom-out"
+          />
+        </div>
+      )}
     </div>
   );
 }
+
+

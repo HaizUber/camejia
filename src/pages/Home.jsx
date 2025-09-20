@@ -3,9 +3,9 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText as GSAPSplitText } from "gsap/SplitText";
 import profileImg from "../assets/profile.jpg";
+import ResumePDF from "../assets/Resume_MEJIA.pdf";
 import "../index.css";
 
-// OGL imports
 import { Renderer, Camera, Geometry, Program, Mesh } from "ogl";
 
 gsap.registerPlugin(ScrollTrigger, GSAPSplitText);
@@ -393,7 +393,8 @@ export default function Home() {
       <div className="mt-8 flex flex-col sm:flex-row gap-4 relative z-10">
         <GlareHover glareColor="#ffffff" glareOpacity={0.6} glareSize={200}>
           <a
-            href="/resume.pdf"
+            href={ResumePDF}
+            download="Resume_MEJIA.pdf"
             aria-label="Download Resume"
             className="px-8 py-3 rounded font-semibold text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 inline-block"
           >
