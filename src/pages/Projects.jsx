@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
+import React, { useState, useEffect, useRef, useLayoutEffect, useCallback } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -260,23 +260,33 @@ function ProjectModal({ project, onClose }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [enlarged, setEnlarged] = useState(false);
 
+  const dragRef = useRef({ dragging: false, startX: 0 });
+  const [dragOffset, setDragOffset] = useState(0);
+
+  const nextSlide = useCallback(() => {
+    if (!project?.images?.length) return;
+    setCurrentIndex((prev) => (prev + 1 < project.images.length ? prev + 1 : 0));
+  }, [project]);
+
+  const prevSlide = useCallback(() => {
+    if (!project?.images?.length) return;
+    setCurrentIndex((prev) =>
+      prev - 1 >= 0 ? prev - 1 : project.images.length - 1
+    );
+  }, [project]);
+
   useEffect(() => {
     const onKeyDown = (e) => {
       if (e.key === "Escape") {
-        if (enlarged) {
-          setEnlarged(false);
-        } else {
-          onClose();
-        }
+        if (enlarged) setEnlarged(false);
+        else onClose();
       }
-      if (!enlarged) {
-        if (e.key === "ArrowRight") nextSlide();
-        if (e.key === "ArrowLeft") prevSlide();
-      }
+      if (e.key === "ArrowRight") nextSlide();
+      if (e.key === "ArrowLeft") prevSlide();
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [onClose, enlarged]);
+  }, [onClose, enlarged, nextSlide, prevSlide]);
 
   useLayoutEffect(() => {
     const el = modalRef.current;
@@ -289,14 +299,40 @@ function ProjectModal({ project, onClose }) {
     return () => anim.kill();
   }, []);
 
-  const nextSlide = () =>
-    setCurrentIndex((prev) =>
-      prev + 1 < project.images.length ? prev + 1 : 0
-    );
-  const prevSlide = () =>
-    setCurrentIndex((prev) =>
-      prev - 1 >= 0 ? prev - 1 : project.images.length - 1
-    );
+  useEffect(() => {
+    if (enlarged) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+  }, [enlarged]);
+
+  const onPointerDown = (e) => {
+    dragRef.current.dragging = true;
+    dragRef.current.startX = e.clientX;
+    try {
+      e.currentTarget.setPointerCapture?.(e.pointerId);
+    } catch {}
+  };
+  const onPointerMove = (e) => {
+    if (!dragRef.current.dragging) return;
+    const diff = e.clientX - dragRef.current.startX;
+    setDragOffset(diff);
+  };
+  const onPointerUp = (e) => {
+    if (!dragRef.current.dragging) return;
+    dragRef.current.dragging = false;
+    const diff = dragOffset;
+    const threshold = 60;
+    if (diff < -threshold) nextSlide();
+    else if (diff > threshold) prevSlide();
+    setDragOffset(0);
+    try {
+      e.currentTarget.releasePointerCapture?.(e.pointerId);
+    } catch {}
+  };
 
   return (
     <div
@@ -310,12 +346,14 @@ function ProjectModal({ project, onClose }) {
       >
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white text-2xl"
+          className="absolute top-3 right-3 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white text-2xl z-20"
+          aria-label="Close modal"
         >
           &times;
         </button>
 
-        {project.images && project.images.length > 0 && (
+        {/* Normal carousel */}
+        {project?.images?.length > 0 && (
           <div className="relative w-full h-64 overflow-hidden">
             <div
               className="flex transition-transform duration-500 ease-in-out h-full"
@@ -333,27 +371,34 @@ function ProjectModal({ project, onClose }) {
             </div>
 
             <button
-              onClick={prevSlide}
-              className="absolute top-1/2 left-3 -translate-y-1/2 bg-black/50 text-white rounded-full p-2 hover:bg-black/70"
+              onClick={(e) => {
+                e.stopPropagation();
+                prevSlide();
+              }}
+              className="absolute top-1/2 left-3 -translate-y-1/2 bg-black/50 text-white rounded-full p-2 hover:bg-black/70 z-20"
             >
               &#8249;
             </button>
             <button
-              onClick={nextSlide}
-              className="absolute top-1/2 right-3 -translate-y-1/2 bg-black/50 text-white rounded-full p-2 hover:bg-black/70"
+              onClick={(e) => {
+                e.stopPropagation();
+                nextSlide();
+              }}
+              className="absolute top-1/2 right-3 -translate-y-1/2 bg-black/50 text-white rounded-full p-2 hover:bg-black/70 z-20"
             >
               &#8250;
             </button>
 
-            <div className="absolute bottom-3 w-full flex justify-center gap-2">
+            <div className="absolute bottom-3 w-full flex justify-center gap-2 z-20">
               {project.images.map((_, idx) => (
                 <button
                   key={idx}
-                  onClick={() => setCurrentIndex(idx)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCurrentIndex(idx);
+                  }}
                   className={`w-3 h-3 rounded-full ${
-                    currentIndex === idx
-                      ? "bg-white"
-                      : "bg-white/50 hover:bg-white/80"
+                    currentIndex === idx ? "bg-white" : "bg-white/50 hover:bg-white/80"
                   }`}
                 />
               ))}
@@ -373,20 +418,81 @@ function ProjectModal({ project, onClose }) {
         </div>
       </div>
 
+      {/* Enlarged fullscreen carousel */}
       {enlarged && (
         <div
           className="fixed inset-0 z-60 flex items-center justify-center bg-black/90"
           onClick={() => setEnlarged(false)}
         >
-          <img
-            src={project.images[currentIndex]}
-            alt="Enlarged"
-            className="max-w-full max-h-full object-contain cursor-zoom-out"
-          />
+          <div
+            className="relative w-full h-full flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setEnlarged(false)}
+              className="absolute top-6 right-6 z-30 text-white text-3xl"
+              aria-label="Close enlarged"
+            >
+              &times;
+            </button>
+
+            <div
+              className="flex transition-transform duration-300 ease-in-out h-full w-full items-center"
+              style={{
+                transform: `translateX(calc(-${currentIndex * 100}% + ${dragOffset}px))`,
+              }}
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onPointerUp={onPointerUp}
+              onPointerCancel={onPointerUp}
+            >
+              {project.images.map((img, idx) => (
+                <div key={idx} className="w-full flex-shrink-0 h-full flex items-center justify-center">
+                  <img
+                    src={img}
+                    alt={`${project.title} enlarged ${idx + 1}`}
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                prevSlide();
+              }}
+              className="absolute top-1/2 left-5 -translate-y-1/2 bg-black/50 text-white rounded-full p-3 hover:bg-black/70 text-2xl z-30"
+            >
+              &#8249;
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                nextSlide();
+              }}
+              className="absolute top-1/2 right-5 -translate-y-1/2 bg-black/50 text-white rounded-full p-3 hover:bg-black/70 text-2xl z-30"
+            >
+              &#8250;
+            </button>
+
+            <div className="absolute bottom-6 w-full flex justify-center gap-3 z-30">
+              {project.images.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setCurrentIndex(idx);
+                  }}
+                  className={`w-4 h-4 rounded-full ${
+                    currentIndex === idx ? "bg-white" : "bg-white/50 hover:bg-white/80"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>
   );
 }
-
-
