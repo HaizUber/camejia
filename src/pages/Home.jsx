@@ -2,7 +2,6 @@ import { useRef, useLayoutEffect, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText as GSAPSplitText } from "gsap/SplitText";
-import profileImg from "../assets/profile.jpg";
 import ResumePDF from "../assets/Resume_MEJIA.pdf";
 import "../index.css";
 
@@ -213,20 +212,22 @@ const Particles = ({
 /* ---------- ShinyText & GlareHover Components ---------- */
 const ShinyText = ({ text, disabled = false, speed = 5, className = "" }) => {
   const animationDuration = `${speed}s`;
-  const baseColor = "#b5b5b5a4";
+
+  // Different colors for light/dark mode via CSS variable
+  const lightBaseColor = "#4b5563"; // gray-600
+  const darkBaseColor = "#d1d5db"; // gray-300
 
   const style = disabled
-    ? { color: baseColor }
+    ? { color: "var(--shiny-text-color)" }
     : {
-        backgroundImage: `linear-gradient(${baseColor}, ${baseColor}),
-        linear-gradient(110deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0) 60%)`,
+        backgroundImage: `linear-gradient(var(--shiny-text-color), var(--shiny-text-color)),
+          linear-gradient(110deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0) 60%)`,
         backgroundSize: "100% 100%, 200% 100%",
         backgroundRepeat: "no-repeat",
         WebkitBackgroundClip: "text",
         backgroundClip: "text",
         color: "transparent",
-        animationDuration,
-        backgroundPosition: "0 0, 200% 0",
+        animationDuration, // will control shine speed
       };
 
   return (
@@ -235,9 +236,19 @@ const ShinyText = ({ text, disabled = false, speed = 5, className = "" }) => {
       style={style}
     >
       {text}
+      <style jsx>{`
+        :root {
+          --shiny-text-color: ${lightBaseColor};
+        }
+        .dark {
+          --shiny-text-color: ${darkBaseColor};
+        }
+      `}</style>
     </span>
   );
 };
+
+
 
 /* ---------- GlareHover component ---------- */
 const GlareHover = ({

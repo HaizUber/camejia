@@ -15,17 +15,13 @@ html, body, #root {
 
 /* === Shine Animation === */
 @keyframes shine {
-  0% {
-    background-position: 0 0, -200% 0;
-  }
-  100% {
-    background-position: 0 0, 200% 0;
-  }
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
-
 .animate-shine {
   animation: shine linear infinite;
 }
+
 
 /* === Subtle Animated Background for Home Section === */
 .home-bg {
