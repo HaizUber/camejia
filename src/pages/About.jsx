@@ -8,6 +8,7 @@ import {
   Layout,
   Smartphone,
   Database,
+  BookOpen,
 } from "lucide-react";
 
 import { useLayoutEffect, useMemo, useRef } from "react";
@@ -170,9 +171,9 @@ technology solutions.
       desc: "Developing dynamic platforms that adapt content and behavior based on real-time data and custom business logic.",
     },
     {
-      icon: <Smartphone className="w-6 h-6 text-blue-500" />,
-      title: "Responsive Builds",
-      desc: "Mobile-first layouts that stay usable on any screen.",
+      icon: <BookOpen className="w-6 h-6 text-blue-500" />,
+      title: "Continuous Learning",
+      desc: "Expanding skills and adapting to new technologies to stay ahead in the ever-evolving tech landscape.",
     },
   ];
 
