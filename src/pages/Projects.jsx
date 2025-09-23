@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useLayoutEffect, useCallback } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { CheckCircle } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,6 +46,16 @@ const portfolioImageFiles = [
     "projportfolio4.png",
 ];
 
+const genshinbudImageFiles = [
+    "projgenshinbud1.png",
+    "projgenshinbud2.png",
+    "projgenshinbud3.png",
+    "projgenshinbud4.png",
+    "projgenshinbud5.png",
+    "projgenshinbud6.png",
+    "projgenshinbud7.png",
+];
+
 const asssocImages = assocImageFiles.map(
   (file) => new URL (`../assets/${file}`, import.meta.url).href
 );
@@ -65,37 +76,117 @@ const portfolioImages = portfolioImageFiles.map(
    (file) => new URL (`../assets/${file}`, import.meta.url).href
 );
 
+const genshinbudImages = genshinbudImageFiles.map(
+   (file) => new URL (`../assets/${file}`, import.meta.url).href
+);
+
 const projects = [
   {
     title: "Associates Portal",
     category: "Web Development",
     desc: "Leave management system.",
     images: asssocImages,
+    tech: [
+      { name: "CodeIgniter", icon: "devicon-codeigniter-plain colored" },
+      { name: "PHP", icon: "devicon-php-plain colored" },
+      { name: "JavaScript", icon: "devicon-javascript-plain colored" },
+      { name: "HTML5", icon: "devicon-html5-plain colored" },
+      { name: "CSS3", icon: "devicon-css3-plain colored" },
+      { name: "MySQL", icon: "devicon-mysql-plain colored" },
+    ],
+    details: [
+      "Designed a data-driven system to enforce employee-specific conditions and leave entitlements.",
+      "Provided employees with clear visibility into leave balances and filing history, while delivering HR valuable analytics on leave usage trends."
+    ],
   },
   {
     title: "Render Farm Manager",
     category: "Web Development",
     desc: "PC resource management & reservations.",
     images: renderImages,
+    tech: [
+      { name: "CodeIgniter", icon: "devicon-codeigniter-plain colored" },
+      { name: "PHP", icon: "devicon-php-plain colored" },
+      { name: "JavaScript", icon: "devicon-javascript-plain colored" },
+      { name: "HTML5", icon: "devicon-html5-plain colored" },
+      { name: "CSS3", icon: "devicon-css3-plain colored" },
+      { name: "MySQL", icon: "devicon-mysql-plain colored" },
+    ],
+    details: [
+      "Implemented real-time PC monitoring, including availability, maintenance status, and reservation schedules via an integrated calendar.",
+      "Improved efficiency for administrators by simplifying monitoring and maintenance of render farm resources."
+    ],
   },
   {
     title: "Alabites Food Ordering App",
     category: "Web Development",
-    desc: "Food ordering application (React, ExpressJS, MongoDB, Firebase)",
+    desc: "Food ordering application.",
     images: alabitesImages,
+    tech: [
+      { name: "MongoDB", icon: "devicon-mongodb-plain colored" },
+      { name: "Express.js", icon: "devicon-express-original" },
+      { name: "React", icon: "devicon-react-original colored" },
+      { name: "Node.js", icon: "devicon-nodejs-plain colored" },
+      { name: "Firebase", icon: "devicon-firebase-plain colored" },
+    ],
+    details: [
+      "Thesis project developed for FEU Alabang food concessionaires.",
+      "Enabled students to order meals through a centralized web platform.",
+      "Integrated Firebase Authentication for secure user login and registration.",
+      "Implemented real-time order tracking and valuable store analytics such as inventory tracking and popular menu items.",
+      "Featured a custom-built API for fetching menu data, store details, and user orders.",
+      "Designed a responsive UI to ensure seamless user experience across devices."
+    ],
   },
   {
     title: "Portfolio Website",
     category: "Web Design",
     desc: "Personal dev portfolio in React + Vite + Tailwind.",
     images: portfolioImages,
+    tech: [
+      { name: "React", icon: "devicon-react-original colored" },
+      { name: "Vite", icon: "devicon-vitejs-plain colored" },
+      { name: "TailwindCSS", icon: "devicon-tailwindcss-plain colored" },
+    ],
+    details: [
+      "Built a responsive personal developer portfolio showcasing projects, skills, and experience.",
+      "Implemented modern animations with GSAP, particle effects, and smooth theme toggling.",
+    ],
   },
   {
     title: "RotomDex {WIP}",
     category: "Web Development",
-    desc: "Pokemon-Themed Wiki Application (React + Vite, PokeAPI) *Very early in development*",
+    desc: "Pokemon-Themed Wiki Application (very early in development).",
     images: rotomdexImages,
-  }
+    tech: [
+      { name: "React", icon: "devicon-react-original colored" },
+      { name: "Vite", icon: "devicon-vitejs-plain colored" },
+      { name: "TailwindCSS", icon: "devicon-tailwindcss-plain colored" },
+      { name: "PokeAPI", icon: "" }, // no official devicon
+    ],
+    details: [
+      "Developed an interactive wiki-like website offering insights into Pokemon.",
+      "Featured PokeAPI integration for fetching relevant data, evolution chains, and detailed Pokemon stats.",
+      "Designed with a clean mobile-first UI to combine utility and user-friendliness."
+    ],
+  },
+    {
+    title: "Genshin Buddy",
+    category: "Web Development",
+    desc: "Genshin Impact-Themed Wiki Application.",
+    images: genshinbudImages,
+    tech: [
+      { name: "MongoDB", icon: "devicon-mongodb-plain colored" },
+      { name: "Express.js", icon: "devicon-express-original" },
+      { name: "React", icon: "devicon-react-original colored" },
+      { name: "Node.js", icon: "devicon-nodejs-plain colored" },
+    ],
+    details: [
+      "Developed an interactive wiki-like website offering insights and build details for Genshin Impact characters.",
+      "Featured Unofficial Genshin API integration for fetching relevant data, character abilities, and detailed weapon stats.",
+      "Featured its own custom-built API for fetching data missing from the Unofficial Genshin API, such as weapon/artifact recommendations based on user popularity.",
+    ],
+  },
 ];
 
 function ScrollFloatHeading({ children }) {
@@ -250,6 +341,19 @@ function ProjectCard({ project, onClick }) {
         {project.desc && (
           <p className="mt-2 text-sm text-gray-700 dark:text-gray-400">{project.desc}</p>
         )}
+
+        {project.tech && (
+          <div className="mt-3 flex flex-wrap gap-2">
+            {project.tech.map((t) => (
+              <span
+                key={t.name}
+                className="flex items-center gap-1 px-2 py-1 rounded-lg bg-gray-100 dark:bg-gray-800 text-xs font-medium text-gray-700 dark:text-gray-300"
+              >
+                {t.icon && <i className={`${t.icon} text-base`} />} {t.name}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
     </li>
   );
@@ -352,7 +456,7 @@ function ProjectModal({ project, onClose }) {
           &times;
         </button>
 
-        {/* Normal carousel */}
+        {/* Image Carousel */}
         {project?.images?.length > 0 && (
           <div className="relative w-full h-64 overflow-hidden">
             <div
@@ -414,7 +518,37 @@ function ProjectModal({ project, onClose }) {
           <p className="text-sm text-blue-500 dark:text-blue-400">
             {project.category}
           </p>
-          <p className="mt-3 text-gray-700 dark:text-gray-300">{project.desc}</p>
+
+          {project.details ? (
+            <ul className="mt-4 space-y-3">
+              {project.details.map((d, i) => (
+                <li
+                  key={i}
+                  className="flex items-start gap-2 text-gray-700 dark:text-gray-300 text-sm"
+                >
+                  <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                  <span>{d}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            project.desc && (
+              <p className="mt-3 text-gray-700 dark:text-gray-300">{project.desc}</p>
+            )
+          )}
+
+          {project.tech && (
+            <div className="mt-5 flex flex-wrap gap-2">
+              {project.tech.map((t) => (
+                <span
+                  key={t.name}
+                  className="flex items-center gap-1 px-2 py-1 rounded-lg bg-gray-100 dark:bg-gray-800 text-xs font-medium text-gray-700 dark:text-gray-300"
+                >
+                  {t.icon && <i className={`${t.icon} text-base`} />} {t.name}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -447,7 +581,10 @@ function ProjectModal({ project, onClose }) {
               onPointerCancel={onPointerUp}
             >
               {project.images.map((img, idx) => (
-                <div key={idx} className="w-full flex-shrink-0 h-full flex items-center justify-center">
+                <div
+                  key={idx}
+                  className="w-full flex-shrink-0 h-full flex items-center justify-center"
+                >
                   <img
                     src={img}
                     alt={`${project.title} enlarged ${idx + 1}`}

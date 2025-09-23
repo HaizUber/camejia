@@ -8,6 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Contact() {
   const sectionRef = useRef(null);
   const footerRef = useRef(null);
+  const socialsRef = useRef(null);
   const [toast, setToast] = useState(null);
 
   useLayoutEffect(() => {
@@ -16,6 +17,9 @@ export default function Contact() {
 
     const heading = section.querySelector("h2");
     const inputs = section.querySelectorAll("input, textarea, button");
+    const socials = socialsRef.current
+      ? socialsRef.current.querySelectorAll("a")
+      : [];
     const footer = footerRef.current;
 
     const tl = gsap.timeline({
@@ -46,12 +50,28 @@ export default function Contact() {
       "-=0.4"
     );
 
+    if (socials.length) {
+      tl.fromTo(
+        socials,
+        { opacity: 0, y: 40, scale: 0.9 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.6,
+          ease: "power3.out",
+          stagger: 0.15,
+        },
+        "-=0.3"
+      );
+    }
+
     if (footer) {
       tl.fromTo(
         footer,
         { opacity: 0, x: 40 },
         { opacity: 1, x: 0, duration: 0.8, ease: "power3.out" },
-        "-=0.4"
+        "-=0.3"
       );
     }
 
@@ -87,7 +107,6 @@ export default function Contact() {
 
   const showToast = (type, message) => {
     setToast({ type, message });
-
     setTimeout(() => setToast(null), 4000);
   };
 
@@ -138,9 +157,35 @@ export default function Contact() {
             Send Message
           </button>
         </form>
+
+        {/* Social Links */}
+        <div
+          ref={socialsRef}
+          className="mt-8 flex justify-center gap-4 text-2xl"
+        >
+          <a
+            href="https://www.linkedin.com/in/camejia"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+            className="p-3 rounded-lg bg-gray-200 dark:bg-gray-800 text-blue-600 hover:scale-110 transition-transform"
+          >
+            <i className="devicon-linkedin-plain"></i>
+          </a>
+
+          <a
+            href="https://github.com/HaizUber"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub"
+            className="p-3 rounded-lg bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white hover:scale-110 transition-transform"
+          >
+            <i className="devicon-github-original"></i>
+          </a>
+        </div>
       </div>
 
-      <div className="w-full flex justify-end pr-12">
+      <div className="w-full flex justify-end pr-12 mt-10">
         <footer
           ref={footerRef}
           className="flex items-center gap-2 text-gray-600 dark:text-gray-400 text-sm select-none"
