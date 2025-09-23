@@ -213,9 +213,8 @@ const Particles = ({
 const ShinyText = ({ text, disabled = false, speed = 5, className = "" }) => {
   const animationDuration = `${speed}s`;
 
-  // Different colors for light/dark mode via CSS variable
-  const lightBaseColor = "#4b5563"; // gray-600
-  const darkBaseColor = "#d1d5db"; // gray-300
+  const lightBaseColor = "#4b5563"; 
+  const darkBaseColor = "#d1d5db"; 
 
   const style = disabled
     ? { color: "var(--shiny-text-color)" }
@@ -227,7 +226,7 @@ const ShinyText = ({ text, disabled = false, speed = 5, className = "" }) => {
         WebkitBackgroundClip: "text",
         backgroundClip: "text",
         color: "transparent",
-        animationDuration, // will control shine speed
+        animationDuration, 
       };
 
   return (
@@ -247,8 +246,6 @@ const ShinyText = ({ text, disabled = false, speed = 5, className = "" }) => {
     </span>
   );
 };
-
-
 
 /* ---------- GlareHover component ---------- */
 const GlareHover = ({

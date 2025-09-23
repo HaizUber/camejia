@@ -1,4 +1,4 @@
-import profileImg from "../assets/profile.jpg";
+import profileImg from "../assets/profile.png";
 import {
   Mail,
   Phone,
@@ -68,7 +68,6 @@ function ScrollFloat({
           end: scrollEnd,
           scrub: 0.5,
           toggleActions: "play reverse play reverse",
-          // markers: true,
         },
       }
     );
