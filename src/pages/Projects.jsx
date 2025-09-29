@@ -440,25 +440,30 @@ function ProjectModal({ project, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/70 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-black/70 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
         ref={modalRef}
-        className="relative w-full max-w-lg bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden transform"
+        className="relative w-full max-w-lg sm:max-w-xl bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden transform flex flex-col max-h-[95vh] sm:max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white text-2xl z-20"
-          aria-label="Close modal"
-        >
-          &times;
-        </button>
+        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 sticky top-0 z-20">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 truncate">
+            {project.title}
+          </h3>
+          <button
+            onClick={onClose}
+            className="flex items-center justify-center w-10 h-10 rounded-lg bg-red-500 hover:bg-red-600 text-white text-2xl font-bold shadow transition"
+            aria-label="Close modal"
+          >
+            <span className="leading-none">×</span>
+          </button>
+        </div>
 
-        {/* Image Carousel */}
+        {/* Carousel */}
         {project?.images?.length > 0 && (
-          <div className="relative w-full h-64 overflow-hidden">
+          <div className="relative w-full h-48 sm:h-64 bg-gray-100 dark:bg-gray-800 overflow-hidden flex-shrink-0">
             <div
               className="flex transition-transform duration-500 ease-in-out h-full"
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -473,27 +478,29 @@ function ProjectModal({ project, onClose }) {
                 />
               ))}
             </div>
-
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                prevSlide();
-              }}
-              className="absolute top-1/2 left-3 -translate-y-1/2 bg-black/50 text-white rounded-full p-2 hover:bg-black/70 z-20"
-            >
-              &#8249;
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                nextSlide();
-              }}
-              className="absolute top-1/2 right-3 -translate-y-1/2 bg-black/50 text-white rounded-full p-2 hover:bg-black/70 z-20"
-            >
-              &#8250;
-            </button>
-
-            <div className="absolute bottom-3 w-full flex justify-center gap-2 z-20">
+            {project.images.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    prevSlide();
+                  }}
+                  className="absolute top-1/2 left-2 -translate-y-1/2 bg-black/50 text-white rounded-full p-1 sm:p-2 hover:bg-black/70 z-20"
+                >
+                  &#8249;
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    nextSlide();
+                  }}
+                  className="absolute top-1/2 right-2 -translate-y-1/2 bg-black/50 text-white rounded-full p-1 sm:p-2 hover:bg-black/70 z-20"
+                >
+                  &#8250;
+                </button>
+              </>
+            )}
+            <div className="absolute bottom-2 w-full flex justify-center gap-2 z-20">
               {project.images.map((_, idx) => (
                 <button
                   key={idx}
@@ -501,7 +508,7 @@ function ProjectModal({ project, onClose }) {
                     e.stopPropagation();
                     setCurrentIndex(idx);
                   }}
-                  className={`w-3 h-3 rounded-full ${
+                  className={`w-2 h-2 rounded-full ${
                     currentIndex === idx ? "bg-white" : "bg-white/50 hover:bg-white/80"
                   }`}
                 />
@@ -510,17 +517,12 @@ function ProjectModal({ project, onClose }) {
           </div>
         )}
 
-        {/* Content */}
-        <div className="p-6">
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-            {project.title}
-          </h3>
-          <p className="text-sm text-blue-500 dark:text-blue-400">
+        <div className="overflow-y-auto px-4 py-4 sm:px-6 flex-1 min-h-0 max-h-[40vh] sm:max-h-[45vh]">
+          <p className="text-sm text-blue-500 dark:text-blue-400 mb-2">
             {project.category}
           </p>
-
           {project.details ? (
-            <ul className="mt-4 space-y-3">
+            <ul className="space-y-3">
               {project.details.map((d, i) => (
                 <li
                   key={i}
@@ -552,7 +554,6 @@ function ProjectModal({ project, onClose }) {
         </div>
       </div>
 
-      {/* Enlarged fullscreen carousel */}
       {enlarged && (
         <div
           className="fixed inset-0 z-60 flex items-center justify-center bg-black/90"
@@ -564,10 +565,10 @@ function ProjectModal({ project, onClose }) {
           >
             <button
               onClick={() => setEnlarged(false)}
-              className="absolute top-6 right-6 z-30 text-white text-3xl"
+              className="absolute top-6 right-6 z-30 flex items-center justify-center w-12 h-12 rounded-lg bg-red-500 hover:bg-red-600 text-white text-3xl font-bold shadow transition"
               aria-label="Close enlarged"
             >
-              &times;
+              <span className="leading-none">×</span>
             </button>
 
             <div
