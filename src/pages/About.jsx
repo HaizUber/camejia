@@ -162,7 +162,7 @@ technology solutions.
     {
       icon: <Code2 className="w-6 h-6 text-blue-500" />,
       title: "Web Development",
-      desc: "Building robust full-stack applications using React, MongoDB, PHP/CodeIgniter, and MySQL for scalable solutions.",
+      desc: "Building modern web applications with React, PHP/CodeIgniter, MongoDB, and MySQL.",
     },
     {
       icon: <Database className="w-6 h-6 text-blue-500" />,
