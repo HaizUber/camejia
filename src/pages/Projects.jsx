@@ -565,10 +565,10 @@ function ProjectModal({ project, onClose }) {
           >
             <button
               onClick={() => setEnlarged(false)}
-              className="absolute top-6 right-6 z-30 flex items-center justify-center w-12 h-12 rounded-lg bg-red-500 hover:bg-red-600 text-white text-3xl font-bold shadow transition"
+              className="absolute top-16 right-6 z-30 flex items-center justify-center w-12 h-12 rounded-lg bg-red-500 hover:bg-red-600 text-white shadow transition text-4xl"
               aria-label="Close enlarged"
             >
-              <span className="leading-none">×</span>
+              ×
             </button>
 
             <div

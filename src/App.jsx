@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Projects from './pages/Projects';
 import Contact from './pages/Contact';
+import logo from './assets/react.svg'; 
 
 export default function App() {
   const [theme, setTheme] = useState('dark');
@@ -26,9 +27,29 @@ export default function App() {
   const toggleTheme = () =>
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
 
+  const navItems = [
+    { label: 'Home', href: '#home' },
+    { label: 'About', href: '#about' },
+    { label: 'Projects', href: '#projects' },
+    { label: 'Contact', href: '#contact' }
+  ];
+
   return (
     <div className="min-h-screen w-full transition-colors bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-white">
-      <Navbar toggleTheme={toggleTheme} theme={theme} />
+      <Navbar
+        logo={logo}
+        logoAlt="Your Logo"
+        items={navItems}
+        activeHref="#home"
+        className="custom-nav"
+        ease="power2.easeOut"
+        baseColor="#000000"
+        pillColor="#ffffff"
+        hoveredPillTextColor="#ffffff"
+        pillTextColor="#000000"
+        theme={theme}
+        toggleTheme={toggleTheme}
+      />
       <main>
         <Home />
         <About />
