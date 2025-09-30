@@ -147,10 +147,7 @@ export default function About() {
   };
 
   const aboutCopy = `
-Entry-level IT professional specializing in web and mobile application development. Skilled
-in building responsive web apps, mobile-first solutions, and database-driven systems. Eager
-to apply academic knowledge and hands-on project experience to contribute to innovative
-technology solutions.
+Motivated IT professional specializing in web and mobile application development. Skilled in building responsive web applications and database-driven systems. Eager to apply academic knowledge and hands-on project experience to contribute to innovative technology solutions.
   `.trim();
 
   const services = [
