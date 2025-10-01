@@ -170,7 +170,6 @@ const projects = [
     details: [
       "Developed an interactive wiki-like website offering insights into Pokemon.",
       "Featured PokeAPI integration for fetching relevant data, evolution chains, and detailed Pokemon stats.",
-      "Designed with a clean mobile-first UI to combine utility and user-friendliness."
     ],
   },
     {
