@@ -158,6 +158,7 @@ const projects = [
   },
   {
     title: "RotomDex",
+    link: "https://rotomdex.vercel.app/",
     category: "Web Development",
     desc: "Pokemon-Themed Wiki Application (early in development).",
     images: rotomdexImages,
@@ -174,6 +175,7 @@ const projects = [
   },
     {
     title: "Genshin Buddy",
+    link: "https://genshin-bud.vercel.app/",
     category: "Web Development",
     desc: "Genshin Impact-Themed Wiki Application.",
     images: genshinbudImages,
@@ -336,9 +338,6 @@ function ProjectCard({ project, onClick }) {
         )}
       </div>
       <div className="p-5">
-        <h4 className="font-semibold text-lg text-gray-900 dark:text-gray-100">
-          {project.title}
-        </h4>
         <p className="text-sm text-blue-500 dark:text-blue-400">{project.category}</p>
         {project.desc && (
           <p className="mt-2 text-sm text-gray-700 dark:text-gray-400">{project.desc}</p>
@@ -451,9 +450,26 @@ function ProjectModal({ project, onClose }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 sticky top-0 z-20">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 truncate">
-            {project.title}
-          </h3>
+          <div className="flex items-center gap-2">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 truncate">
+              {project.title}
+            </h3>
+            {project.link ? (
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-2 px-3 py-1 rounded bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition"
+                aria-label="Visit project website"
+              >
+                Visit Site
+              </a>
+            ) : (
+              <span className="ml-2 px-3 py-1 rounded bg-gray-400 text-white text-xs font-semibold opacity-60 cursor-not-allowed select-none">
+                N/A
+              </span>
+            )}
+          </div>
           <button
             onClick={onClose}
             className="flex items-center justify-center w-10 h-10 rounded-lg bg-red-500 hover:bg-red-600 text-white text-2xl font-bold shadow transition"
