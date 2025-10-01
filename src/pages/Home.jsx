@@ -4,10 +4,27 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText as GSAPSplitText } from "gsap/SplitText";
 import ResumePDF from "../assets/Resume_MEJIA.pdf";
 import "../index.css";
+import LogoLoop from "../components/LogoLoop";
+import { SiReact, SiVite, SiTailwindcss, SiCodeigniter, SiPhp, SiJavascript, SiHtml5, SiCss3, SiMongodb, SiExpress, SiNodedotjs, SiFirebase } from "react-icons/si";
 
 import { Renderer, Camera, Geometry, Program, Mesh } from "ogl";
 
 gsap.registerPlugin(ScrollTrigger, GSAPSplitText);
+
+const techLogos = [
+  { node: <SiReact style={{ color: "#61DAFB" }} />, title: "React", href: "https://react.dev" },
+  { node: <SiVite style={{ color: "#646CFF" }} />, title: "Vite", href: "https://vitejs.dev" },
+  { node: <SiTailwindcss style={{ color: "#06B6D4" }} />, title: "Tailwind CSS", href: "https://tailwindcss.com" },
+  { node: <SiCodeigniter style={{ color: "#EF4223" }} />, title: "CodeIgniter", href: "https://codeigniter.com" },
+  { node: <SiPhp style={{ color: "#777BB4" }} />, title: "PHP", href: "https://www.php.net" },
+  { node: <SiJavascript style={{ color: "#F7DF1E" }} />, title: "JavaScript", href: "https://developer.mozilla.org/docs/Web/JavaScript" },
+  { node: <SiHtml5 style={{ color: "#E34F26" }} />, title: "HTML5", href: "https://developer.mozilla.org/docs/Web/HTML" },
+  { node: <SiCss3 style={{ color: "#1572B6" }} />, title: "CSS3", href: "https://developer.mozilla.org/docs/Web/CSS" },
+  { node: <SiMongodb style={{ color: "#47A248" }} />, title: "MongoDB", href: "https://mongodb.com" },
+  { node: <SiExpress style={{ color: "#808080" }} />, title: "Express.js", href: "https://expressjs.com" },
+  { node: <SiNodedotjs style={{ color: "#339933" }} />, title: "Node.js", href: "https://nodejs.org" },
+  { node: <SiFirebase style={{ color: "#FFCA28" }} />, title: "Firebase", href: "https://firebase.google.com" },
+];
 
 /* ---------- Particles Component ---------- */
 const defaultColors = ["#ffffff", "#ffffff", "#ffffff"];
@@ -392,7 +409,7 @@ export default function Home() {
 
       <p className="mt-4 text-xl md:text-2xl max-w-3xl relative z-10">
         <ShinyText
-          text="Web Developer | React | Tailwind | PHP | CodeIgniter"
+          text=" Web Development & Mobile Applications"
           speed={4}
           className="leading-tight"
         />
@@ -419,6 +436,19 @@ export default function Home() {
             Contact Me
           </a>
         </GlareHover>
+      </div>
+      <div className="flex justify-center mt-8 max-w-2xl mx-auto">
+        <LogoLoop
+          logos={techLogos}
+          speed={80}
+          direction="left"
+          logoHeight={40}
+          gap={32}
+          pauseOnHover={true}
+          scaleOnHover={true}
+          fadeOut={false}
+          ariaLabel="Technologies used in my projects"
+        />
       </div>
     </section>
   );
