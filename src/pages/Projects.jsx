@@ -37,6 +37,9 @@ const alabitesImageFiles = [
 const rotomdexImageFiles = [
    "rotomdex1.png",
    "rotomdex2.png",
+   "rotomdex3.png",
+   "rotomdex4.png",
+   "rotomdex5.png",
 ];
 
 const portfolioImageFiles = [
@@ -154,15 +157,15 @@ const projects = [
     ],
   },
   {
-    title: "RotomDex {WIP}",
+    title: "RotomDex",
     category: "Web Development",
-    desc: "Pokemon-Themed Wiki Application (very early in development).",
+    desc: "Pokemon-Themed Wiki Application (early in development).",
     images: rotomdexImages,
     tech: [
       { name: "React", icon: "devicon-react-original colored" },
       { name: "Vite", icon: "devicon-vitejs-plain colored" },
       { name: "TailwindCSS", icon: "devicon-tailwindcss-plain colored" },
-      { name: "PokeAPI", icon: "" }, // no official devicon
+      { name: "PokeAPI", icon: "" }, 
     ],
     details: [
       "Developed an interactive wiki-like website offering insights into Pokemon.",
