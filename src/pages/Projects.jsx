@@ -338,6 +338,9 @@ function ProjectCard({ project, onClick }) {
         )}
       </div>
       <div className="p-5">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 truncate">
+              {project.title}
+            </h3>
         <p className="text-sm text-blue-500 dark:text-blue-400">{project.category}</p>
         {project.desc && (
           <p className="mt-2 text-sm text-gray-700 dark:text-gray-400">{project.desc}</p>
